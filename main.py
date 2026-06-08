@@ -16,7 +16,7 @@ async def search(
     return result
 
 @app.get("/products")
-async def products(
+async def get_products(
     skip: int = 0,
     limit: Annotated[int, Query()] = 10,
     category: Annotated[str | None, Query(
@@ -34,3 +34,9 @@ async def products(
         "category": category,
         "sort": sort
     }
+
+@app.get("/tags")
+async def get_tags(
+    tags: Annotated[list[str] | None, Query()] = None
+):
+    return {"tags": tags}
