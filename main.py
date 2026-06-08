@@ -14,3 +14,23 @@ async def search(
 ):
     result = {"searching_for": q} if q else {"result": "no search term"}
     return result
+
+@app.get("/products")
+async def products(
+    skip: int = 0,
+    limit: Annotated[int, Query()] = 10,
+    category: Annotated[str | None, Query(
+        min_length=2,
+        max_length=30
+    )] = None,
+    sort: Annotated[str, Query(
+        min_length=2,
+        max_length=10
+    )] = "name"
+):
+    return {
+        "skip": skip,
+        "limit": limit,
+        "category": category,
+        "sort": sort
+    }
