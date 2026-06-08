@@ -40,3 +40,11 @@ async def get_tags(
     tags: Annotated[list[str] | None, Query()] = None
 ):
     return {"tags": tags}
+
+@app.get("/items")
+async def get_items(
+    category: Annotated[str, Query(
+        alias='item-category'
+    )]
+):
+    return {'category': category}
