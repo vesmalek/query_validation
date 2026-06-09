@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Path
 
 app = FastAPI()
 
@@ -14,6 +14,16 @@ async def search(
 ):
     result = {"searching_for": q} if q else {"result": "no search term"}
     return result
+
+@app.get("/products/{product_id}")
+async def get_product(
+    product_id: Annotated[int, Path(
+        title='Product ID',
+        description='Return product with the specified ID',
+        ge=1
+    )]
+):
+    return {'product_id': product_id}
 
 @app.get("/products")
 async def get_products(
