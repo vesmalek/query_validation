@@ -27,4 +27,22 @@ async def get_products(
 ):
     return products[skip: skip + limit]
 
-    
+@app.get('/items/{item_id}')
+async def get_item(
+    item_id: Annotated[int, Path(
+        title='Item ID',
+        gt=0,
+        le=9999
+    )],
+    price_min: Annotated[float | None, Query(
+        ge=0.0
+    )] = 0.0,
+    price_max: Annotated[float | None, Query(
+        gt=0.0
+    )] = None
+):
+    return {
+        'item_id': item_id,
+        'price_min': price_min,
+        'price_max': price_max
+    }
