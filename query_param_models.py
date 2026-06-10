@@ -4,6 +4,8 @@ from pydantic import BaseModel, Field
 
 app = FastAPI()
 
+items = ["FastAPI tutorial", "Python basics", "Django REST", "FastAPI with databases", "React frontend"]
+
 products = [
     {"name": "shirt", "price": 29.99, "in_stock": True},
     {"name": "shoes", "price": 59.99, "in_stock": False},
@@ -15,10 +17,10 @@ products = [
 class SearchParams(BaseModel):
     model_config = {"extra", "forbid"}
 
-    q: str = Field(min_length=2, max_length=100)
+    q: str = Field(min_length=2, max_length=100, alias='search-keyword')
     skip: int = Field(0, ge=0)
     limit: int = Field(10, ge=1, le=100)
-    exact_match: bool = None
+    exact_match: bool = False
 
 class ProductFilters(BaseModel):
     model_config = {"extra", "forbid"}
@@ -40,3 +42,14 @@ async def get_products(filters: Annotated[ProductFilters, Query()]):
 
     return results[filters.skip: filters.skip + filters.limit]
 
+@app.get("/search")
+async def search(filters: Annotated[SearchParams, Query()]):
+    result = items
+
+    if filters.exact_match:
+        result = [p for p in result if p.lower().strip() == filters.q.lower().strip()]
+    else:
+        result = [p for p in result if filters.q.lower().strip() in p.lower().strip()]
+
+    return result[filters.skip: filters.skip + filters.limit]
+    
