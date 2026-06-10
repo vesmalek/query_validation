@@ -12,6 +12,12 @@ products = [
     {"name": "socks", "price": 4.99, "in_stock": False},
 ]
 
+class SearchParams(BaseModel):
+    q: str = Field(min_length=2, max_length=100)
+    skip: int = Field(0, ge=0)
+    limit: int = Field(10, ge=1, le=100)
+    exact_match: bool = None
+
 class ProductFilters(BaseModel):
     # model_config = {"extra", "forbid"}
 
