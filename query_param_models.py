@@ -15,16 +15,12 @@ products = [
 ]
 
 class SearchParams(BaseModel):
-    model_config = {"extra", "forbid"}
-
     q: str = Field(min_length=2, max_length=100, alias='search-keyword')
     skip: int = Field(0, ge=0)
     limit: int = Field(10, ge=1, le=100)
     exact_match: bool = False
 
 class ProductFilters(BaseModel):
-    model_config = {"extra", "forbid"}
-
     skip: int = Field(0, ge=0)
     limit: int = Field(10, ge=1, le=50)
     sort_by: Literal['name', 'price'] = 'name'
