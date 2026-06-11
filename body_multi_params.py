@@ -4,6 +4,8 @@ from pydantic import BaseModel, Field
 
 app = FastAPI()
 
+# task 02, 03, 04 and 05 pending. Complete these as well from 'Body - Multiple Parameters'
+
 class Product(BaseModel):
     name: str = Field(min_length=3, max_length=50)
     price: float = Field(gt=0, le=50)
